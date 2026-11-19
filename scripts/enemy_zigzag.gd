@@ -266,7 +266,7 @@ func execute_firing_pattern() -> void:
 
 func get_nose_offset() -> float:
 	if sprite and sprite.texture:
-		return (sprite.texture.get_size().y * sprite.scale.y * 0.5) + 8.0
+		return (sprite.texture.get_size().y * abs(sprite.global_scale.y) * 0.5) + 8.0
 	return 32.0
 
 func spawn_single_laser(offset: Vector2, angle_offset_deg: float = 0.0) -> void:

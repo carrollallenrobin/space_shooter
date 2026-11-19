@@ -9,7 +9,7 @@ height = 246.0
 
 [node name="EnemyZigzag" type="Area2D"]
 rotation = 3.14159
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.25, 0.25)
 script = ExtResource("1_7ilrs")
 
 [node name="InterceptorGold" type="Sprite2D" parent="."]

@@ -214,7 +214,7 @@ func shoot_laser() -> void:
 
 	var spawn_y: float = -35.0
 	if sprite and sprite.texture:
-		spawn_y = -(sprite.texture.get_size().y * sprite.scale.y * 0.5) - 5.0
+		spawn_y = -(sprite.texture.get_size().y * abs(sprite.global_scale.y) * 0.5) - 5.0
 
 	# Purple Crystal Shooting
 	if is_purple_sequence and purple_timer > 0.0:

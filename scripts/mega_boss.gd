@@ -9,6 +9,7 @@ var current_health: float
 
 var screen_size: Vector2
 var entry_target_y: float = 180.0 # Upper Screen Hold Height
+const SIZE_FACTOR: float = 0.5 # Boss visual/collision size multiplier
 var is_entering: bool = true
 
 # Movement & Oscillating AI
@@ -119,7 +120,8 @@ func setup_boss_health_bar() -> void:
 	hp_bar.add_theme_stylebox_override("background", sb_bg)
 	
 	hp_bar.custom_minimum_size = Vector2(280, 18)
-	hp_bar.position = Vector2(-140, -180)
+	hp_bar.scale = Vector2.ONE / SIZE_FACTOR # keep HP bar readable when boss is shrunk
+	hp_bar.position = Vector2(-140.0 / SIZE_FACTOR, -180)
 	hp_bar.rotation_degrees = 0.0
 		
 	add_child(hp_bar)
@@ -178,7 +180,7 @@ func _process_boss_movement(delta: float) -> void:
 	global_position.y = entry_target_y + organic_sine
 
 	# SAFE BOUNDS CLAMP
-	var half_width = 160.0
+	var half_width = 160.0 * SIZE_FACTOR
 	if global_position.x >= screen_size.x - half_width:
 		global_position.x = screen_size.x - half_width
 		move_direction = -1.0
@@ -210,18 +212,18 @@ func spawn_predictive_aim_lasers() -> void:
 			if is_instance_valid(marker):
 				spawn_single_aimed_laser(marker.global_position, predicted_pos)
 	else:
-		spawn_single_aimed_laser(global_position + Vector2(-40, 60), predicted_pos)
-		spawn_single_aimed_laser(global_position + Vector2(40, 60), predicted_pos)
+		spawn_single_aimed_laser(global_position + Vector2(-40, 60) * SIZE_FACTOR, predicted_pos)
+		spawn_single_aimed_laser(global_position + Vector2(40, 60) * SIZE_FACTOR, predicted_pos)
 
 func spawn_fan_spread_lasers() -> void:
-	var base_origin = global_position + Vector2(0, 120)
+	var base_origin = global_position + Vector2(0, 120) * SIZE_FACTOR
 	var angles = [-35.0, -18.0, 0.0, 18.0, 35.0]
 	for deg in angles:
 		var dir = Vector2.DOWN.rotated(deg_to_rad(deg))
 		spawn_directional_laser(base_origin, dir)
 
 func spawn_radial_bullet_hell(bullet_count: int) -> void:
-	var origin = global_position + Vector2(0, 110)
+	var origin = global_position + Vector2(0, 110) * SIZE_FACTOR
 	for i in range(bullet_count):
 		var angle = (i * (360.0 / bullet_count))
 		var dir = Vector2.DOWN.rotated(deg_to_rad(angle))
@@ -245,7 +247,7 @@ func _configure_enemy_laser(laser: Node) -> void:
 		laser.set_damage(current_laser_damage)
 
 func spawn_single_aimed_laser(spawn_pos: Vector2, target_pos: Vector2) -> void:
-	var safe_offset = Vector2(0, 45)
+	var safe_offset = Vector2(0, 45) * SIZE_FACTOR
 	var final_pos = spawn_pos + safe_offset
 	
 	var laser = enemy_laser_scene.instantiate()
@@ -281,7 +283,7 @@ func spawn_center_spread_burst() -> void:
 	if not enemy_laser_scene:
 		return
 		
-	var center_origin = global_position + Vector2(0, 90)
+	var center_origin = global_position + Vector2(0, 90) * SIZE_FACTOR
 	var total_bullets = 16
 	
 	for i in range(total_bullets):
@@ -399,11 +401,11 @@ func setup_boss_texture(texture_path: String, lvl: int) -> void:
 		var hp_mult = GameManager.boss_hp_multiplier if GameManager else 1.0
 
 		if is_mega:
-			scale = Vector2(auto_scale * 1.2, auto_scale * 1.2)
+			scale = Vector2(auto_scale * 1.2, auto_scale * 1.2) * SIZE_FACTOR
 			use_markers = true
 			max_health = 1500.0 * hp_mult
 		else:
-			scale = Vector2(auto_scale * 1.4, auto_scale * 1.4)
+			scale = Vector2(auto_scale * 1.4, auto_scale * 1.4) * SIZE_FACTOR
 			use_markers = false
 			max_health = (400.0 + (lvl * 100.0)) * hp_mult
 			
