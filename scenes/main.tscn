@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cbrow3b3vqn2"]
+[gd_scene load_steps=10 format=3 uid="uid://cbrow3b3vqn2"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_0aa36"]
 [ext_resource type="Script" path="res://scripts/hud_ui.gd" id="2_5w3rh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bknk3hgo13bsi" path="res://asstes/Icons/Heart.png" id="3_4qomv"]
 [ext_resource type="PackedScene" uid="uid://bs5p840ap403f" path="res://scenes/player.tscn" id="3_06io0"]
 [ext_resource type="Texture2D" uid="uid://d4eww22m46h5i" path="res://asstes/Icons/Coin.png" id="4_57ijj"]
+[ext_resource type="PackedScene" path="res://scenes/scrolling_background.tscn" id="5_scrbg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5t1x7"]
 draw_center = false
@@ -101,13 +102,11 @@ theme_override_font_sizes/font_size = 50
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BackgroundSprite" type="Sprite2D" parent="."]
-position = Vector2(363.863, 637.954)
-rotation = 1.5708
-scale = Vector2(0.7767, 0.796255)
+[node name="ScrollingBackground" parent="." instance=ExtResource("5_scrbg")]
 texture = ExtResource("2_stc1n")
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
+scroll_speed = 60.0
+rotate_90 = true
+mirror_alternate = true
 
 [node name="Player" parent="." instance=ExtResource("3_06io0")]
 position = Vector2(364, 1120)
